@@ -1,4 +1,6 @@
-﻿using System;
+﻿using MongoDB.Driver;
+using Semana05.Collections;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -8,10 +10,20 @@ namespace Semana05.Controllers
 {
     public class AnimalsController : Controller
     {
+        public MongoClient server = new MongoClient(System.Configuration.ConfigurationManager.AppSettings.Get("MongoConnection"));
+       static public IMongoDatabase database = server.GetDatabase(System.Configuration.ConfigurationManager.AppSettings.Get("databaseName"));
+     
+
+        public AnimalsController()
+        {
+            var server = new MongoClient(System.Configuration.ConfigurationManager.AppSettings.Get("MongoConnection"));
+            var database = server.GetDatabase(System.Configuration.ConfigurationManager.AppSettings.Get("databaseName"));
+            var animales = database.GetCollection<Animales> ("animals");
+        }
         // GET: Animals
         public ActionResult Index()
         {
-            return View();
+           // return Json(database.GetStats)
         }
 
         // GET: Animals/Details/5
